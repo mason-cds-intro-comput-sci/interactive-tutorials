@@ -1,0 +1,81 @@
+---
+title: "learnr and gradethis notes"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Documentation and Tutorials
+
+* `learnr` documentation: https://rstudio.github.io/learnr/index.html
+* `gradethis` documentation: https://rstudio-education.github.io/gradethis/index.html
+* Shiny:
+  * Official (RStudio) tutorial videos: https://shiny.rstudio.com/tutorial/
+  * RStudio articles (more advanced): https://shiny.rstudio.com/articles/
+  * *Mastering Shiny* book by Hadley: https://mastering-shiny.org/
+* Daniel Chen talk at satRday DC 2020
+  * Slides: https://speakerdeck.com/chendaniely/satrday-grading-code-with-gradethis
+  * Video: https://www.youtube.com/watch?v=doYOgkq9JG8
+* *R packages* book by Hadley: https://r-pkgs.org/
+
+## Setup
+
+Run before installing `learnr` for the first time
+
+```r
+devtools::install_github("rstudio/packrat")
+```
+
+
+## Grading `ggplot` objects
+
+See this issue: https://github.com/rstudio-education/gradethis/issues/97
+
+1 Compare `str` output:
+  
+  ```r
+  pass_if( ~ diffobj::diffStr(.result, a)@diff.count.full == 0, "ok")
+  ```
+  
+  Has issues with datasets if some columns are stored as lists...
+
+2. Compare svg output
+
+3. Look at properties of ggplot object:
+
+  * https://stackoverflow.com/questions/31038709/how-to-write-a-test-for-a-ggplot-plot
+  * https://stackoverflow.com/questions/13457562/how-to-determine-the-geom-type-of-each-layer-of-a-ggplot2-object
+
+4. compare or vdiffr packages: https://stackoverflow.com/questions/51709272/r-test-that-a-ggplot-didnt-change
+  
+
+
+## Line highlighting
+
+Flair package: https://kbodwin.github.io/flair/
+
+Also see discussion here: https://community.rstudio.com/t/line-highlighting-within-code-chunks-knitted-notebook/58748/5
+
+
+## Getting session information
+
+* Forum discussion: https://community.rstudio.com/t/how-to-get-user-id-in-the-website-created-by-learnr-and-published-in-rstudio-connect/44067/3
+  * and related example on GH here: https://github.com/colearendt/learnr-session-info/blob/master/learnr-session-info.Rmd
+
+## GMU deployment
+
+Deployment server (Summer 2020): http://rs2.mesa.gmu.edu:3939/
+
+* ssh in: `ssh dwhite34@rs2.mesa.gmu.edu`
+
+Example app URL:
+
+* http://rs2.mesa.gmu.edu:3939/intro-to-R/
+
+
+
+## Advanced
+
+* Understanding `tidy_eval`: apparently well explained https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html and https://dplyr.tidyverse.org/articles/programming.html
