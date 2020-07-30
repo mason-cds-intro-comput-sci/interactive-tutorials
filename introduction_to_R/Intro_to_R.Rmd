@@ -1,6 +1,8 @@
 ---
-title: "Interactive Introduction to Programming in R"
+title: "Introduction to Programming in R"
 author: "by Dominic White"
+tutorial:
+  version: 1.1
 output:
   learnr::tutorial:
     progressive: true
@@ -96,6 +98,8 @@ print("Hello, World!")
 grade_code("You just ran your first program! Don't worry, things will soon get more interesting.")
 ```
 
+(If a yellow box appears warning you that your answer is "invisible", don't worry. You can safely ignore this.)
+
 Once you have successfully edited the program, click on the "Next Topic" button below.
 
 ## Data
@@ -120,7 +124,7 @@ In the following code chunk, 12.5 is wrtten as character data (i.e. literally a 
 
 <div id="ex1-hint">
 <p class="comment">
-**Hint:** If you remove the quotation marks around 12.5, if will be treated as a number instead of as characters.
+**Hint:** If you remove the quotation marks around 12.5, it will be treated as a number instead of as characters.
 </p>
 </div>
 
@@ -154,7 +158,9 @@ some text data
 grade_code(":)")
 ```
 
-When you are done, click "Continue".
+When you are done, continue to the next section.
+
+<!--
 
 ### Vectors
 
@@ -199,6 +205,8 @@ grade_code(":)")
 > These tell us where abouts in the vector we are. The number indicates the position in the vector of the first element displayed on that line.
 >
 > For example, the `[1]` at the start of the line (before "Introduction") shows that "Introduction" is the first element in this vector.
+
+-->
 
 ## Operators
 
@@ -259,7 +267,8 @@ Run this code chunk to figure out what the `-` operator does (feel free to play 
 ```{r operators_subtraction_quiz, echo=FALSE}
 question("What does the - operator do?",
   answer("Adds two numbers together."),
-  answer("Subtracts one number from another.", correct = TRUE)
+  answer("Subtracts one number from another.", correct = TRUE),
+  allow_retry = TRUE
 )
 ```
 
@@ -277,7 +286,8 @@ question("What does the * operator do?",
   answer("Adds two numbers together."),
   answer("Subtracts one number from another."),
   answer("Multiplies two numbers together.", correct = TRUE),
-  answer("Divides one number by another.")
+  answer("Divides one number by another."),
+  allow_retry = TRUE
 )
 ```
 
@@ -295,7 +305,8 @@ question("What does the * operator do?",
   answer("Adds two numbers together."),
   answer("Subtracts one number from another."),
   answer("Multiplies two numbers together."),
-  answer("Divides one number by another.", correct = TRUE)
+  answer("Divides one number by another.", correct = TRUE),
+  allow_retry = TRUE
 )
 ```
 
@@ -305,15 +316,16 @@ question("What does the * operator do?",
 Run this code chunk to figure out what the `/` operator does (play around with the numbers to see what happens):
 
 ```{r operators_exponent, exercise=TRUE}
-3 ^ 3
+4 ^ 2
 ```
 
 ```{r operators_exponent_quiz, echo=FALSE}
 question("What does the ^ operator do?",
   answer("Returns the modulus (the remainder after dividing one number by another)."),
-  answer("Calculates an exponential (raises one number to the power of the second.", correct = TRUE),
+  answer("Calculates an exponential (raises one number to the power of the second).", correct = TRUE),
   answer("Evaluates an equality (whether one number is equal to another)."),
-  answer("Evaluates an inequality (whether one number is bigger or smaller than another).")
+  answer("Evaluates an inequality (whether one number is bigger or smaller than another)."),
+  allow_retry = TRUE
 )
 ```
 
@@ -331,7 +343,8 @@ question("What does the %% operator do?",
   answer("Returns the modulus (the remainder after dividing one number by another).", correct = TRUE),
   answer("Calculates an exponential (raises one number to the power of the second."),
   answer("Evaluates an equality (whether one number is equal to another)."),
-  answer("Evaluates an inequality (whether one number is bigger or smaller than another).")
+  answer("Evaluates an inequality (whether one number is bigger or smaller than another)."),
+  allow_retry = TRUE
 )
 ```
 
@@ -353,7 +366,8 @@ question("What does the ^ operator do?",
   answer("Returns the modulus (the remainder after dividing one number by another)."),
   answer("Calculates an exponential (raises one number to the power of the second."),
   answer("Evaluates an equality (whether one number is equal to another)."),
-  answer("Evaluates an inequality (whether one number is bigger or smaller than another).", correct = TRUE)
+  answer("Evaluates an inequality (whether one number is bigger or smaller than another).", correct = TRUE),
+  allow_retry = TRUE
 )
 ```
 
@@ -373,7 +387,8 @@ question("What does the ^ operator do?",
   answer("Returns the modulus (the remainder after dividing one number by another)."),
   answer("Calculates an exponential (raises one number to the power of the second."),
   answer("Evaluates an equality (whether one number is equal to another).", correct = TRUE),
-  answer("Evaluates an inequality (whether one number is bigger or smaller than another).")
+  answer("Evaluates an inequality (whether one number is bigger or smaller than another)."),
+  allow_retry = TRUE
 )
 ```
 
@@ -389,9 +404,9 @@ In such a case, which operation do we do first?
 
 Again, just like in regular math, some operations are always done before others. For example, all multiplication and division will be done before any addition or subtraction.
 
-> F.Y.I.
+> **F.Y.I.**
 >
-> The order in which operators are applied is known as **operator precedence**, and you can find the precendence of any operator here: https://stat.ethz.ch/R-manual/R-devel/library/base/html/Syntax.html
+> The order in which operators are calculated is known as *operator precedence*, and you can find the precedence of any operator here: https://stat.ethz.ch/R-manual/R-devel/library/base/html/Syntax.html
 
 We can change the order of operations with parentheses: `(` and `)`. For example
 
@@ -410,12 +425,12 @@ Modify the expression below so that it performs this calculation $\frac{3 + 5}{(
 </p>
 
 ```{r operators_parentheses, exercise=TRUE}
-3 + 5 / 5 * 3 ^ 2
+3 + 5 / 5 * 2 ^ 2
 ```
 
 ```{r operators_parentheses-check}
 grade_result(
-  pass_if(~ identical(.result, 0.8), "Looks like you're a parenthesis master!")
+  pass_if(~ identical(.result, 0.08), "Looks like you're a parenthesis master!")
 )
 ```
 
@@ -454,7 +469,8 @@ a <- 2 + 2
 question("What has just happened?",
   answer("The first line calculates 2 + 2 and the second line calculates 5 * 5."),
   answer("The value 2 was stored in the variable a, and then the value of a was used in the second line."),
-  answer("The result of 2 + 2 was stored in the variable a, and then the value of a was used in the second line.", correct = TRUE)
+  answer("The result of 2 + 2 was stored in the variable a, and then the value of a was multiplied by 5 in the second line.", correct = TRUE),
+  allow_retry = TRUE
 )
 ```
 
@@ -496,7 +512,7 @@ b <- 4
 Output the value of the variable `b` that you created above.
 </p>
 
-```{r what_is_b, exercise=TRUE}
+```{r what_is_b, exercise=TRUE, exercise.setup = "what_is_b_setup"}
 
 ```
 
@@ -520,10 +536,11 @@ grade_code(":)")
 Variables get their name because their value can vary. We have created the variable `b` that holds the value 4, but we can change the value of `b` and store a completely different value in it!
 
 <p class="comment3">
-Assign the value `5` to `b`
+Assign the value `5` to to the variable `b`
 </p>
 
 ```{r b_is_5, exercise=TRUE}
+
 ```
 
 <div id="b_is_5-hint">
@@ -549,7 +566,7 @@ grade_result(
 
 `<-` is an operator, just like `+` or `*`. As such, it has a precedence: it will happen before some operators but after others.
 
-However, it turns out that the `<-` precedence is [extremely low](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Syntax.html) - i.e. it will happen after all other operators have been assigned.
+However, it turns out that the `<-` precedence is [extremely low](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Syntax.html) - i.e. it will happen after the result of all the other operators has been calculated.
 
 So, when you write:
 
@@ -663,11 +680,11 @@ An alternative container in R is a **vector**. Vectors can also hold multiple pi
 We create a vector with `c()`:
 
 ```{r, echo=TRUE}
-v <- c(1,2,3)
+c(1,2,3)
 ```
 
 <p class="comment3">
-Create a vector holding 3 character strings values (in this order): "This", "is a", "vector!"
+Create a vector holding 3 character strings (in this order): "This", "is a", "vector!"
 </p>
 
 ```{r create_a_vector, exercise=TRUE}
@@ -687,6 +704,12 @@ c("This", "is a", "vector!")
 ```{r create_a_vector-check}
 grade_code(":)")
 ```
+
+> You might be wondering what the numbers in square brackets at the start of each line in the output mean? E.g. `[1]`
+>
+> These tell us where abouts in the vector we are. The number indicates the position in the vector of the first element displayed on that line.
+>
+> For example, the `[1]` at the start of the line (before "Introduction") shows that "Introduction" is the first element in this vector.
 
 ### Operations on vectors
 
@@ -721,7 +744,8 @@ v3 + v4
 question("What happens when you add two vectors of different lengths?",
   answer("The 2 elements of v3 are added to the first 2 elements of v4, and the rest of v4 is unchanged."),
   answer("v3 is repeated to match the length of v4 before they are added.", correct=TRUE, message="This is called 'broadcasting', and is not what you might expect. In can cause bugs in R programs if the programmer (i.e. you) thinks that two vectors are the same length when they are not."),
-  answer("R guesses values for the remaining values of v3 so that the two vectors are the same length.")
+  answer("R guesses values for the remaining values of v3 so that the two vectors are the same length."),
+  allow_retry = TRUE
 )
 ```
 
@@ -735,8 +759,13 @@ You probably remember that the length of the hypotenuse (long side) of a right-a
 $c = \sqrt{a^2 + b^2}$
 
 <p class="comment3">
-Write one (or more) lines of code that calculates the hypotenuse of a triangle where the shorts sides have lengths 10 and 20.
+Write one (or more) lines of code that calculates the hypotenuse of a triangle where the short sides have lengths 10 and 20.
 </p>
+
+<!--
+TODO:
+- provide a template with blanks?
+-->
 
 ```{r hypotenuse_code, exercise=TRUE}
 
@@ -823,13 +852,13 @@ There are a few things to note about this code:
 * When we want to run the code, we write the function name followed by parentheses, with any arguments inside the parentheses (separated by commas)
 
 <p class="comment3">
-Modify the `hypotenuse` function to calculate the *area of a triangle* instead. Save this as a new function called `triangle_area`.
+Replace the blanks to create a function to calculate the *area of a triangle* instead. Save this function as `triangle_area`.
 </p>
 
 ```{r triangle_area_function, exercise=TRUE}
-hypotenuse <- function(a, b) {
-  c <- (a^2 + b^2)^0.5
-  return(c)
+_______ <- function(a, b) {
+  area <- _______
+  return(area)
 }
 ```
 

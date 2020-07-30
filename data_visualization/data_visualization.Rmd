@@ -1,6 +1,8 @@
 ---
-title: "Data Visualization Tutorial"
+title: "Exploratory Data Analysis tutorial"
 author: "by Dominic White"
+tutorial:
+  version: 1.0
 output:
   learnr::tutorial:
     progressive: true
@@ -54,7 +56,7 @@ library(listviewer)
 
 knitr::opts_chunk$set(echo = FALSE)
 tutorial_options(exercise.checker = grade_learnr)
-tutorial_options(exercise.startover = FALSE)
+tutorial_options(exercise.startover = TRUE)
 tutorial_options(exercise.completion = FALSE)
 
 new_recorder <- function(tutorial_id, tutorial_version, user_id, event, data) {
@@ -74,7 +76,7 @@ This tutorial will introduce you to creating graphs in R.
 
 This video will introduce you to the importance of visualization in data science, and how it can be used effectively (or ineffectively).
 
-<iframe width="560" height="315" src="http://www.youtube.com/embed/tHEVRahx0WE?rel=0" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/tHEVRahx0WE?rel=0" frameborder="0" allowfullscreen></iframe>
 
 Slides: [PDF](https://drive.google.com/file/d/1VK_vXEHBK5U35rfgetwon07A7YLpaj_H/edit)
 
@@ -92,7 +94,7 @@ Ideas:
 
 This video will introduce you to the types of graphs that we can use for different types of data.
 
-<iframe width="560" height="315" src="http://www.youtube.com/embed/z9Xe3IfkNQU?rel=0" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/z9Xe3IfkNQU?rel=0" frameborder="0" allowfullscreen></iframe>
 
 Slides: [PDF](https://drive.google.com/file/d/1KiY4qavGUf3gMQF5rg1cR5HzmaI9i0dQ/edit)
 
@@ -110,7 +112,7 @@ Quiz:
 
 This video will show you how to create graphs in R using a *package* called `ggplot`.
 
-<iframe width="560" height="315" src="http://www.youtube.com/embed/Wx-Kr9cp7O8?rel=0" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Wx-Kr9cp7O8?rel=0" frameborder="0" allowfullscreen></iframe>
 
 Slides: [PDF](https://drive.google.com/file/d/1iOh3_7T7hhCO3IWkSoXCT1xqQUUHc0hw/edit)
 
@@ -160,7 +162,7 @@ Run the following code chunk to inspect the dataset, and then answer the followi
 starwars
 ```
 
-`starwars` is an example of a **dataframe**: a table of data with rows and columns. Each row contains an *observation*, and each columns holds a *variable*.
+`starwars` is an example of a **dataframe**: a table of data with rows and columns. Each row contains an *observation*, and each column holds a *variable*.
 
 ```{r starwars_col_quiz, echo=FALSE}
 question("How many variables are in this dataset?",
@@ -244,7 +246,7 @@ decorate('starwars_basic_hist') %>%
 
 
 ```{r ggplot_funcs_quiz, echo=FALSE}
-question("How many functions are in this code?",
+question("How many functions are used in the code that creates the histogram?",
   answer("1", message = "Every variable name followed by parentheses is a function, e.g. ggplot()"),
   answer("2", message = "Functions can be nested inside other functions."),
   answer("3", correct = TRUE, message = "ggplot, geom_histogram, and aes are all functions."),
@@ -270,7 +272,8 @@ question("What type of geometric layer is created by the geom_histogram() functi
 Each of the graphing functions expects certain arguments.
 
 For example, 
-* we should pass in a dataframe in the `ggplot` function: here we pass in the `starwars` dataframe
+
+* we need to pass in a dataframe as the first argument of the `ggplot` function: here we pass in the `starwars` dataframe
 * every geom function needs an **aesthetic mapping**: to do this we pass the `aes()` function to the `mapping` parameter.
   - the aesthetic mapping tells `ggplot` how to convert a variable in the dataframe (e.g. `birth_year`) into a geometric object.
   - in a histogram, we are only required to map one thing: *what goes on the x-axis* (for this geom function, `ggplot` automatically calculates the y-axis by counting up the number of observations in each bin)
@@ -289,7 +292,7 @@ We want to `fill` (color) by the `gender` variable. Therefore, the `fill` parame
 Fill in the blank to color the histogram by the `gender` variable.
 </p>
 
-```{r adaeqqcacfofqcxs, exercise = TRUE}
+```{r adaeqqcacfofqcxs, exercise = TRUE, message = FALSE, warning = FALSE}
 ggplot(starwars) +
   geom_histogram(mapping = aes(x = birth_year, fill = _____ ))
 ```
@@ -318,7 +321,7 @@ But what about if we wanted to make all the bars of the histogram a particular c
 
 We could try changing the value of the `fill` argument to `"blue"`, but the result is not quite what we hoped for:
 
-```{r non_blue_histogram, include = FALSE}
+```{r non_blue_histogram, include = FALSE, message = FALSE, warning = FALSE}
 ggplot(starwars) + 
   geom_histogram(aes(x = birth_year, fill="blue"))
 ```
@@ -384,12 +387,12 @@ Add `position="identity"` into this code in the correct spot (and don't forget t
 
 ```{r fdeedqhioyiosqoh, exercise = TRUE, message = FALSE, warning=FALSE}
 ggplot(starwars) +
-  geom_histogram(mapping = aes(x = birth_year, fill = birth_year))
+  geom_histogram(mapping = aes(x = birth_year, fill = gender))
 ```
 
 ```{r fdeedqhioyiosqoh-solution}
 ggplot(starwars) +
-  geom_histogram(mapping = aes(x = birth_year, fill=birth_year), position = "identity")
+  geom_histogram(mapping = aes(x = birth_year, fill=gender), position = "identity")
 ```
 
 ```{r fdeedqhioyiosqoh-check}
@@ -411,7 +414,7 @@ Add `alpha = 0.3` into this code in the correct spot (and don't forget the comma
 
 ```{r zdhdieapenquuivt, exercise = TRUE, message = FALSE, warning=FALSE}
 ggplot(starwars) +
-  geom_histogram(mapping=aes(x=birth_year, fill=birth_year), position="identity")
+  geom_histogram(mapping=aes(x=birth_year, fill=gender), position="identity")
 ```
 
 ```{r zdhdieapenquuivt-hint-1}
@@ -422,7 +425,7 @@ ggplot(starwars) +
 
 ```{r zdhdieapenquuivt-solution}
 ggplot(starwars) +
-  geom_histogram(mapping = aes(x = birth_year, fill=birth_year), position="identity", alpha=0.3)
+  geom_histogram(mapping = aes(x = birth_year, fill = gender), position="identity", alpha=0.3)
 ```
 
 ```{r zdhdieapenquuivt-check}
@@ -471,7 +474,7 @@ ggplot(data = starwars ) +
 
 ```{r svavlersyjppyzbi-check}
 # check code
-gradethis::grade_code(message = '"These aren`t the droids you`re looking for."')
+gradethis::grade_code()
 ```
 
 
@@ -491,7 +494,7 @@ As well as providing an aesthetic mapping for the x axis, we also need to specif
 
 ```r
 ggplot(data = ...) +
-  geom_scatter(mapping = aes(x = ..., y = ...))
+  geom_point(mapping = aes(x = ..., y = ...))
 ```
 
 <p class="comment3">
@@ -504,7 +507,7 @@ Using the `starwars` dataset, create a scatter plot of `mass` (y axis) vs `heigh
 
 ```{r ycnolkxvwbbkkeba-solution}
 ggplot(data = starwars) +
-  geom_scatter(mapping = aes(x = height, y = mass))
+  geom_point(mapping = aes(x = height, y = mass))
 ```
 
 ```{r ycnolkxvwbbkkeba-check}
@@ -548,6 +551,9 @@ gradethis::grade_code()
 
 TODO:
 
+* test the tutorial: https://ew.com/movies/2020/01/02/star-wars-movies-best-quotes/
+* add more starwars quotes on successful completion of exercises: 
+
 ### Other parameters
 - aes vs fixed parameter practice
 
@@ -563,7 +569,7 @@ TODO:
 This video covers 
 -->
 
-<iframe width="560" height="315" src="http://www.youtube.com/embed/p6J9IxSBMwo?rel=0" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/p6J9IxSBMwo?rel=0" frameborder="0" allowfullscreen></iframe>
 
 Slides: [PDF](https://drive.google.com/file/d/1zVbreifnXfsTiPiTNnQoacOPvtwG-aLN/edit)
 
@@ -575,10 +581,6 @@ Quiz to go here
 TODO: add a quiz on video
 Quiz version of the final slide(s) example plot?
 -->
-
-
-## Final quiz
-
 
 <!--
 TODO: programming questions
