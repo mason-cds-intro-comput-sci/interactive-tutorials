@@ -4,7 +4,7 @@ author:
  - "Ajay Kulkarni"
  - "Dominic White"
 tutorial:
-  version: 1.0
+  version: 1.1
 output:
   learnr::tutorial:
     progressive: true
@@ -395,8 +395,8 @@ dataframe %>%
 
 Notes on this code:
 
-  * the `n()` function returns the number of rows. It does need an argument.
-  * the `nrow()` function also calculates the number of rows, but needs an argument.
+  * the `n()` function returns the number of rows. It does not need an argument.
+  * the `nrow()` function also calculates the number of rows, but needs an argument (a variable who's rows it should count).
   * the `.` argument inside `nrow` is used to refer to the original `dataframe` that we piped in.
 
 <p class="comment3">

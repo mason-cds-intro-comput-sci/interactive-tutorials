@@ -1,5 +1,5 @@
 ---
-title: "Exploratory Data Analysis tutorial"
+title: "Data Visualization tutorial"
 author: "by Dominic White"
 tutorial:
   version: 1.0

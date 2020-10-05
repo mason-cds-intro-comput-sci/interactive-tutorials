@@ -1,0 +1,214 @@
+---
+title: "Introduction to Statistical Inference"
+author: "by Dominic White"
+tutorial:
+  version: 1.0
+output:
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+---
+
+<style>
+p.comment {
+background-color: #EDBB99;
+padding: 10px;
+border: 1px solid black;
+font-style: italic;
+}
+</style>
+
+<style>
+p.comment1 {
+background-color: #A2D9CE;
+padding: 10px;
+border: 1px solid black;
+}
+</style>
+
+<style>
+p.comment2 {
+background-color: #EDBB99; 
+padding: 10px;
+border: 1px solid black;
+}
+</style>
+
+<style>
+p.comment3 {
+background-color: #FDFEFE; 
+padding: 10px;
+border: 1px solid black;
+}
+</style>
+
+
+```{r setup, include=FALSE}
+# devtools::install_github("rstudio/packrat")
+library(tidyverse)
+library(learnr)
+library(gradethis)
+library(checkr)
+library(sortable)
+
+knitr::opts_chunk$set(echo = FALSE)
+tutorial_options(exercise.checker = grade_learnr)
+tutorial_options(exercise.startover = FALSE)
+tutorial_options(exercise.completion = FALSE)
+
+new_recorder <- function(tutorial_id, tutorial_version, user_id, event, data) {
+    #cat(tutorial_id, " (", tutorial_version, "): ", user_id, ", ", event, ", ", "\n", sep = "")
+  cat(tutorial_id, " (", tutorial_version, "): ", user_id , "\n", sep = "")
+  cat("event: ", event, "\n", sep = "")
+}
+
+options(tutorial.event_recorder = new_recorder)
+```
+
+<!--
+TODO:
+ - add in more, better quizzes and exercises throughout!
+-->
+
+
+## What is inference?
+
+> Statistical inference is the process of using data analysis to deduce properties of an underlying distribution of probability. Inferential statistical analysis infers properties of a population, for example by testing hypotheses and deriving estimates.
+>
+> *Source: [Wikipedia](https://en.wikipedia.org/wiki/Statistical_inference)*
+
+What does the above definition mean in simple terms?
+
+The world around us is an uncertain, random place. Take the heights of the students in this class: you all have a wide range of heights - some taller, some shorter. 
+
+We could plot a histogram of your heights - we would call this graph a *distribution* of your heights, and we could *infer* various things about it, e.g. the mean.
+
+This process of going from raw measurements (e.g. of heights) to properties of the distribution that those measurements came from is called *statistical inference*.
+
+
+## Distributions
+
+### Data sampling
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/VYChbNddUkM?rel=0" frameborder="0" allowfullscreen></iframe>
+
+Slides: [PDF](https://drive.google.com/file/d/1qInq4DXzYsHjmnw2lVu_ffVrAUuzN5ko/view?usp=sharing)
+
+<!--
+TODO:
+ - Add a separate section with some additional explanation of correlation vs. causation
+-->
+
+```{r correlation_vs_causation_quiz}
+question(
+  "You create a linear model with a high $R^{2}$ - does this mean that:",
+  answer("A change in the explanatory variable, *x*, **causes** a change in the response variable, *y*"),
+  answer(
+    "A change in the explanatory variable, *x*, is **correlated** with a change in the response variable, *y*", 
+    correct = TRUE,
+    message = "In both a linear model, and the hypothesis tests you will learn about here, we can **never** say that the explanatory variable *causes* the change in the response, only that the changes are correlated."
+    ),
+  allow_retry = TRUE
+)
+```
+
+
+### Quantifying data distributions
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/BL5Bt-nI22k?rel=0" frameborder="0" allowfullscreen></iframe>
+
+Slides: [PDF](http://sp19-001.cds101.com/doc/data_distributions_01_quantifying_data_distributions.pdf)
+
+
+### Quantifying data distributions
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/tvUw91TrWO4?rel=0" frameborder="0" allowfullscreen></iframe>
+
+Slides: [PDF](http://sp19-001.cds101.com/doc/data_distributions_02_quantifying_data_distributions_in_r.pdf)
+
+### Create a boxplot
+
+Fill in the ellipses (`...`) to create a boxplot of the `Sepal.Length` variable from the `iris` dataset.
+
+```{r tfowvuehwkrgqrbv, exercise = TRUE}
+# replace the three ellipses
+iris %>%
+  ggplot() +
+  geom_...(
+    mapping = aes(
+      x = ...,
+      y = ...
+    )
+  )
+```
+
+```{r tfowvuehwkrgqrbv-solution}
+# solution code
+iris %>%
+  ggplot() +
+  geom_boxplot(
+    mapping = aes(
+      x = "",
+      y = Sepal.Length
+    )
+  )
+```
+
+```{r tfowvuehwkrgqrbv-check}
+# check code
+gradethis::grade_code()
+```
+
+
+### Probability mass functions
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/xbLim5imqe4?rel=0" frameborder="0" allowfullscreen></iframe>
+
+Slides: [PDF](http://sp19-001.cds101.com/doc/data_distributions_03_probability_mass_functions.pdf)
+
+
+## Hypothesis testing
+
+### Gender discrimination case study
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/EL9bbzblRq8?rel=0" frameborder="0" allowfullscreen></iframe>
+
+Slides: [PDF](http://sp19-001.cds101.com/doc/inference_and_simulation_01_gender_discrimination_case_study.pdf)
+
+
+### A hypothesis test as a court trial
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/LzsLhuxYiMs?rel=0" frameborder="0" allowfullscreen></iframe>
+
+Slides: [PDF](http://sp19-001.cds101.com/doc/inference_and_simulation_02_a_hypothesis_test_as_a_court_trial.pdf)
+
+
+### A manual simulation of the gender discrimination experiment
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/hjVjAzuMRDM?rel=0" frameborder="0" allowfullscreen></iframe>
+
+Slides: [PDF](http://sp19-001.cds101.com/doc/inference_and_simulation_03_a_manual_simulation_of_the_gender_discrimination_experiment.pdf)
+
+
+### Simulating the gender discrimination experiment in R
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/8wQ-uU611vI?rel=0" frameborder="0" allowfullscreen></iframe>
+
+Slides: [PDF](http://sp19-001.cds101.com/doc/inference_and_simulation_04_simulating_the_gender_discrimination_experiment_in_r.pdf)
+
+
+### One-sided hypothesis tests using infer
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/YmeQ9ThQw9M?rel=0" frameborder="0" allowfullscreen></iframe>
+
+Slides: [PDF](https://drive.google.com/file/d/1SUewphETMnIvzhbXoKK5mXQXhRxpLxhv/view?usp=sharing)
+
+
+
+
+
+
+
+
+
