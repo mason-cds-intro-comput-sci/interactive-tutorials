@@ -102,11 +102,15 @@ set.seed(42)
 x <- 1:10 + rnorm(10, 0, 0.5)
 y <- 2*x + rnorm(10, 0, 1)
 sim_df <- tibble(x, y)
+sim_df %>%
+  ggplot(aes(x,y)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
 ```
 
 But what does a linear model look like in higher dimensions?
 
-```{r}
+```{r, warning=FALSE}
 # Code adapted from https://chart-studio.plotly.com/~diego898/122/_3d-plane-of-best-fit-through-generated-dummy-data/#code
 trace1 <- list(
   uid = "5c56cf7b-dc4c-4dfa-b691-728a6a9e1b6b", 
@@ -452,6 +456,91 @@ knitr::include_graphics("images/resid-vs-pred.png")
 <!--
 TODO:
 - have questions asking students to interpret different assumptions plots
+-->
+
+## Hypothesis tests for models
+
+### Linear models and hypothesis tests
+
+You may remember from our first modeling module that the `tidy` function reported a p-value for the model and for each explanatory variable. See the `p.value` columns in both of these examples:
+
+```{r}
+sim_model <- lm(y ~ x, data=sim_df)
+```
+
+
+```{r, echo = TRUE}
+sim_model %>%
+  glance() %>%
+  select(r.squared, p.value)
+```
+
+As you will remember from our inference modules, the p-value is *the probability that the actual data was generated in a world in which the null hypothesis is true*.
+
+Null hypothesis?! But we haven't specified any hypotheses for our linear model, have we?
+
+In fact, there is a null hypothesis for every linear model, although we have never formally written it down. The null hypothesis for a linear model is that *there is no relationship between the response and explanatory variables*. In other words, our null hypothesis is that the line of best fit is a horizontally flat line (e.g. the blue line in this plot):
+
+```{r}
+sim_df %>%
+  ggplot() +
+  geom_point(mapping = aes(x, y)) +
+  geom_abline(slope = 0, intercept = 0, color = "blue") +
+  ylim(-5,25)
+```
+
+In other words, the p-value is the probability that the data came from this line. Just by looking at it, we can see that this is not very likely, and in fact the p-value is 0.000005 (or 0.0005%), i.e. statistically very unlikely.
+
+We continue to use our regular significance threshold, $\alpha = 0.05$. In this case, we can reject our null hypothesis (that there is no relationship).
+
+However, hypothesis testing only tells us the probability that there is a relationship, or not. If there is a relationship, it doesn't tell us how good it is, i.e. how well our model fits the data. For this, we need to continue to use the $R^2$ value, as well as our graphs to check the 3 main assumptions of the linear model.
+
+
+### p-values of individual variables
+
+The `tidy()` function also reports a p-value for each variable in the model.
+
+```{r, echo = TRUE}
+sim_model %>%
+  tidy()
+```
+
+For individual variables, the null hypothesis is that *each individual explanatory variable has no relationship with the response variable*. In other words, our null hypothesis is that the intercept and slope are 0.
+
+As we can see for this example, because the p-values of the slope is below 0.05, so we reject our null hypothesis. We find that the non-zero slope of the x variable is statistically significant. However, the intercept has a p-value of 0.26. This is greater than 0.05, so we cannot reject our null hypothesis of a zero intercept for this particular dataset.
+
+(This dataset was simulated with an intercept of zero, so that makes sense!)
+
+
+> **A note on scientific notation**
+>
+> In the previous examples, our p-values have been written as strange numbers, such as: 2.637853e-01
+>
+> This is a convenient way of writing numbers that are very large or very small. We can write 1.2 million (1,200,000) as:
+>
+> $1.2 \times 10^6$
+> 
+> i.e. 1.2 times 1 million, or
+>
+> `1.2e6`
+>
+> which uses `e` to represent "10 to the power of".
+>
+> For numbers that are less that one, we can do the same thing but use a negative power of ten. For example, we can write 0.263 as:
+> 
+> $2.63 \times 10^{-1}$
+> 
+> or
+>
+> `2.63e-1`
+>
+> because $10^{-1}$ is 0.1
+
+
+<!--
+## Confidence intervals around a linear model
+
+* Use geom_smooth with method="lm" and show the se
 -->
 
 
