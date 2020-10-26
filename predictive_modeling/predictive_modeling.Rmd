@@ -1,0 +1,121 @@
+---
+title: "Modeling for Prediction"
+author: "by Dominic White"
+tutorial:
+  version: 1.0
+output:
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+---
+
+<style>
+p.comment {
+background-color: #EDBB99;
+padding: 10px;
+border: 1px solid black;
+font-style: italic;
+}
+</style>
+
+<style>
+p.comment1 {
+background-color: #A2D9CE;
+padding: 10px;
+border: 1px solid black;
+}
+</style>
+
+<style>
+p.comment2 {
+background-color: #EDBB99; 
+padding: 10px;
+border: 1px solid black;
+}
+</style>
+
+<style>
+p.comment3 {
+background-color: #FDFEFE; 
+padding: 10px;
+border: 1px solid black;
+}
+</style>
+
+
+```{r setup, include=FALSE}
+# devtools::install_github("rstudio/packrat")
+library(tidyverse)
+library(learnr)
+library(gradethis)
+library(checkr)
+library(sortable)
+
+knitr::opts_chunk$set(echo = FALSE)
+tutorial_options(exercise.checker = grade_learnr)
+tutorial_options(exercise.startover = FALSE)
+tutorial_options(exercise.completion = FALSE)
+
+new_recorder <- function(tutorial_id, tutorial_version, user_id, event, data) {
+    #cat(tutorial_id, " (", tutorial_version, "): ", user_id, ", ", event, ", ", "\n", sep = "")
+  cat(tutorial_id, " (", tutorial_version, "): ", user_id , "\n", sep = "")
+  cat("event: ", event, "\n", sep = "")
+}
+
+options(tutorial.event_recorder = new_recorder)
+```
+
+## Predictive modeling
+
+### Video overview
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/HwZwWkxqafs?rel=0" frameborder="0" allowfullscreen></iframe>
+
+Link to slides: [PDF](https://drive.google.com/file/d/1ui9_U0d0lgNyl1psulAigETQPV5UDdv8/view?usp=sharing)
+
+### Test yourself
+
+```{r terminology-1_quiz}
+question(
+  "In a predictive model, what is a feature?",
+  answer("An explanatory variable, $x$", correct = TRUE),
+  answer("The response variable, $y$"),
+  answer("An observation (i.e. a row in the dataset)"),
+  random_answer_order = TRUE,
+  allow_retry = TRUE
+)
+```
+
+
+
+## Data splits
+
+### Video overview
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/SOvBYm9wyuA?rel=0" frameborder="0" allowfullscreen></iframe>
+
+Link to slides: [PDF](https://drive.google.com/file/d/19GhjI_D0CSFiBjG7yYcxQse81T9EUiU6/view?usp=sharing)
+
+
+## Logistic regression
+
+### Video overview
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/quKGW2Lltt0?rel=0" frameborder="0" allowfullscreen></iframe>
+
+Link to slides: [PDF](https://drive.google.com/file/d/12V_i-IHLMI32UQMJoLwVRrCmgt_6_h0w/view?usp=sharing)
+
+### Test yourself
+
+```{r glm_quiz}
+question(
+  "What type of link function should you use to map a linear model to a binary response (i.e. logistic regression)? I.e. what is the `family` argument of the `glm()` function?",
+  answer("binary"),
+  answer("binomial", correct = TRUE),
+  answer("gaussian"),
+  answer("poisson")
+)
+```
+
+
