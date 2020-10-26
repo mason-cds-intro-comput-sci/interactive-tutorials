@@ -3,7 +3,7 @@ title: "Multiple Regression tutorial"
 author:
  - "Dominic White"
 tutorial:
-  version: 1.0
+  version: 1.1
 output:
   learnr::tutorial:
     progressive: true
@@ -329,7 +329,7 @@ Before we can do so, we need to calculate the predicted values. We can easily cr
 diamonds_model <- lm(price ~ carat + depth, data = diamonds)
 ```
 
-```{r add_diamond_predictions, echo = TRUE}
+```{r, echo = TRUE}
 diamonds_plus_preds <- diamonds %>%
   add_predictions(diamonds_model)
 ```
@@ -341,6 +341,12 @@ Using the new `diamonds_plus_preds` data frame, fill in the *3* blanks to create
 * plotting the true (observed) response variable, `price`, on the y axis, and the model's predictions, `pred`, on the x axis
 * adding a reference line using the `geom_abline` function with a slope of 1 and an intercept of 0.
 </div>
+
+```{r add_diamond_predictions}
+diamonds_model <- lm(price ~ carat + depth, data = diamonds)
+diamonds_plus_preds <- diamonds %>%
+  add_predictions(diamonds_model)
+```
 
 ```{r xwquzrffbtcvubwf, exercise = TRUE, exercise.setup = "add_diamond_predictions"}
 diamonds_plus_preds %>%
@@ -376,7 +382,7 @@ Q-Q plots are so useful that `ggplot` already contains geom functions for creati
 First however, we need to add a column of residuals to our dataframe using the `add_residuals` function that you are already familiar with (we're also going to re-add the `pred` column to show you how to do both at the same time, and because we'll need both columns in the next section):
 
 ```{r, echo=TRUE}
-diamonds_plus <- diamonds %>%
+diamonds_plus_preds <- diamonds %>%
   add_predictions(diamonds_model) %>%
   add_residuals(diamonds_model)
 ```
@@ -384,7 +390,7 @@ diamonds_plus <- diamonds %>%
 Now we can use the `diamonds_plus` data frame to create a Q-Q plot (with both points and a reference line):
 
 ```{r, echo = TRUE}
-diamonds_plus %>%
+diamonds_plus_preds %>%
   ggplot() +
   geom_qq(mapping = aes(sample = resid))+
   geom_qq_line(mapping = aes(sample = resid))
@@ -415,20 +421,21 @@ Fill in the *3* blanks to create a residuals vs. predicted plot (remember that t
 </p>
 
 ```{r add_pred_and_resid}
-diamonds_plus <- diamonds %>%
+diamonds_model <- lm(price ~ carat + depth, data = diamonds)
+diamonds_plus_preds <- diamonds %>%
   add_predictions(diamonds_model) %>%
   add_residuals(diamonds_model)
 ```
 
 ```{r zjheaqgdmjiltikc, exercise = TRUE, exercise.setup = "add_pred_and_resid"}
-diamonds_plus %>%
+diamonds_plus_preds %>%
   ggplot() +
   geom_point(mapping = aes(x = ______, y = ______)) +
   geom_hline(yintercept = ____, color = "white", size = 2)
 ```
 
 ```{r zjheaqgdmjiltikc-solution}
-diamonds_plus %>%
+diamonds_plus_preds %>%
   ggplot() +
   geom_point(mapping = aes(x = pred, y = resid)) +
   geom_hline(yintercept = 0, color = "white", size = 2)
