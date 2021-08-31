@@ -4,7 +4,7 @@ author:
  - "Ajay Kulkarni"
  - "Dominic White"
 tutorial:
-  version: 1.1
+  version: 1.3
 output:
   learnr::tutorial:
     progressive: true
@@ -571,28 +571,34 @@ TODO:
 
 So far we have looked at relatively simple data wrangling operations that return subsets of the data. However, we often want to reshape the dataframe to turn ut into a format called **tidy data**. This video will introduce you to what tidy data looks like.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/FMJfjwAyMA0?rel=0" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/FAU7bgezxRU?rel=0" frameborder="0" allowfullscreen></iframe>
 
-Slides: [PDF](https://drive.google.com/file/d/174WhC51cMkM_IfBH12HME-bZNQu3rJ4o)
+
+<!--
+TODO:
+- Add new slides
+-->
+<!-- Slides: [PDF](https://drive.google.com/file/d/174WhC51cMkM_IfBH12HME-bZNQu3rJ4o) -->
 
 
 ## Converting columns to rows
 
+
+### The `pivot_longer()` function
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/B-OTLMCYYGQ?rel=0" frameborder="0" allowfullscreen></iframe>
+
+
 <!--
 TODO:
-- Update gather with pivot_long
+- Add new slides
 -->
-
-### The `gather` function
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Hnl7Ksc3bUE?rel=0" frameborder="0" allowfullscreen></iframe>
-
-Slides: [PDF](https://drive.google.com/file/d/1CTxz65d4TfHhCAl3AaF1guNl3OvFABgm)
+<!-- Slides: [PDF](https://drive.google.com/file/d/1CTxz65d4TfHhCAl3AaF1guNl3OvFABgm) -->
 
 
 ### Practice
 
-Let's try the `gather` function on the `presidential` dataset. We will convert the two data columns (`start` and `end`) into a tidy format with a key column that indicates the type of data, and a value column that holds the actual date.
+Let's try the `pivot_longer()` function on the `presidential` dataset. We will reshape this dataset to convert the two data columns (`start` and `end`) into rows, with a names column that indicates the name of the original column, and a values column that holds the dates.
 
 In other words, we want to convert the `presidential` dataframe:
 
@@ -620,28 +626,28 @@ Fill in the 4 blanks to achieve the reshaping operation described above.
 
 ```{r xyryspqqovaxcgou, exercise = TRUE}
 presidential %>%
-  gather(____, _____, key="_____", value="______")
+  pivot_longer(cols = _____ | _____ , names_to="_____", values_to="______")
 ```
 
 ```{r xyryspqqovaxcgou-hint-1}
 # hint text
-"Replace the blanks with the names of the two original columns and the two new columns."
+"Replace the blanks with the names of the original columns and the two new columns."
 ```
 
 ```{r xyryspqqovaxcgou-hint-2}
 # hint text
-"List start before end in gather: the order doesn't actually matter, but the grader doesn't know that :("
+"List start before end in `pivot_longer()`: the order doesn't actually matter, but the grader doesn't know that :("
 ```
 
 ```{r xyryspqqovaxcgou-solution}
 # solution code
 presidential %>%
-  gather(start, end, key="type_of_date", value="date")
+  pivot_longer(cols = start | end , names_to="type_of_date", values_to="date")
 ```
 
 <!--
 TODO:
-- make sure the order of columns doesn't matter for the grader
+- make sure the order of columns doesn't matter for the grader, and then remove hint #2
 -->
 
 ```{r xyryspqqovaxcgou-check}
@@ -649,26 +655,23 @@ TODO:
 gradethis::grade_code()
 ```
 
-## Turning rows to columns
 
-<!--
-TODO:
-- Update spread with pivot_wide
--->
+## Turning rows to columns
 
 ### The `spread` function
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/VV_JdcIPVz8?rel=0" frameborder="0" allowfullscreen></iframe>
-
-Slides: [PDF](https://drive.google.com/file/d/1c3yI5GcKdF93rALaa72jo8vV0PqyIuGW)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ULZ2iLDDjTU?rel=0" frameborder="0" allowfullscreen></iframe>
 
 <!--
+TODO:
+- Add new slides
+-->
+<!-- Slides: [PDF](https://drive.google.com/file/d/1c3yI5GcKdF93rALaa72jo8vV0PqyIuGW) -->
 
-TODO: get this exercise working
 
 ### Practice
 
-Let's use the `spread` function to undo the transformation we did earlier with the `gather` function.
+Let's use the `pivot_wider()` function to undo the transformation we did earlier with the `pivot_longer()` function.
 
 I.e. we want to turn this:
 
@@ -691,33 +694,51 @@ back into this:
 
 
 <p class="comment3">
-Use `spread` to recreate the `start` and `end` columns.
+Use `pivot_wider()` to recreate the `start` and `end` columns.
 </p>
 
 ```{r hrtyr6tyufjd, exercise = TRUE}
 pres_gathered <- presidential %>%
-  gather(start, end, key="type_of_date", value="date")
+  pivot_longer(cols = start | end , names_to="type_of_date", values_to="date")
 
 pres_gathered %>%
-  spread(key = "______", value = "_____")
+  pivot_wider(names_from = _____, values_from = _____)
 ```
 
 ```{r hrtyr6tyufjd-hint-1}
 # hint text
-"Key and value refer to the two columns that you created when you gathered the original presidential dataframe"
+"`names_from` and `values_from` refer to the two columns that we created when we lengthened the original presidential dataframe in a previous exercise."
 ```
 
 ```{r hrtyr6tyufjd-solution}
 # solution code
 pres_gathered %>%
-  spread(key = "type_of_date", value = "date")
+  pivot_wider(names_from = type_of_date, values_from = date)
 ```
 
 ```{r hrtyr6tyufjd-check}
 # check code
 gradethis::grade_code()
 ```
--->
+
+### What happened to those dates?
+
+When we tried to reverse the transformation, we were not able to retrieve the start and end date columns back in the same format as we originally started with in the `presidential` dataframe.
+
+Instead of actual dates in the column, you should see values such as `<date [1]>`. This indicate that each cell of the table holds a list of dates instead of just a single date.
+
+You code will also have generated a warning about this: `Warning: Values are not uniquely identified; output will contain list-cols.`
+
+What are these non-unique values that we are being warned about? If you look through the table created by `pivot_wider()`, you will notice that one president's date list is longer than the others (see if you can find which president this is).
+
+<!-- TODO: Make this ^^ a question -->
+
+In fact, there were two US presidents with this same surname during the period of this dataset, and consequently, when we tried to widen the table and identify unique rows, we identified 2 start dates and 2 end dates for this presidential surname.
+
+To avoid these problems when using `pivot_wider()`, we always need at least one column in the remaining non-widened columns that is unique for each row we wish to generate in our output. Here we fail that requirement, because one of the presidential surnames in our dataset is used by two seperate observations (presidents).
+
+By default, `pivot_wider()` assumes that all remaining columns are unique for all widened rows. However, if there are only one or a few unique columns, these can be specified by supplying those column names to the `id_cols` argument of the `pivot_wider()` function. 
+
 
 ## Splitting and combining
 
