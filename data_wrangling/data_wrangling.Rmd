@@ -4,7 +4,7 @@ author:
  - "Ajay Kulkarni"
  - "Dominic White"
 tutorial:
-  version: 1.3
+  version: 1.4
 output:
   learnr::tutorial:
     progressive: true
@@ -46,7 +46,7 @@ border: 1px solid black;
 </style>
 
 
-```{r setup, include=FALSE}
+```{r setup, context='setup', include=FALSE}
 library(tidyverse)
 library(learnr)
 library(gradethis)
