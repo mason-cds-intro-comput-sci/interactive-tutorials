@@ -3,7 +3,7 @@ title: "Introduction to Modeling tutorial"
 author:
  - "Dominic White"
 tutorial:
-  version: 1.0
+  version: 1.1
 output:
   learnr::tutorial:
     progressive: true
@@ -45,7 +45,7 @@ border: 1px solid black;
 </style>
 
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, context="setup"}
 library(tidyverse)
 library(learnr)
 library(gradethis)
