@@ -4,7 +4,7 @@ author:
  - "Ajay Kulkarni"
  - "Dominic White"
 tutorial:
-  version: 1.1
+  version: 1.2
 output:
   learnr::tutorial:
     progressive: true
@@ -46,7 +46,7 @@ border: 1px solid black;
 </style>
 
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, context="setup"}
 library(tidyverse)
 library(learnr)
 library(gradethis)
@@ -202,7 +202,7 @@ The rest of this tutorial will go through different types of graphs, but here ar
 
 * As a general principle, you should do univariate EDA first before multivariate EDA.
 
-* I have put together a flow chart to help you pick the right type of graph for particular types of data and analysis goals: [available as a PDF here](https://drive.google.com/file/d/1zsedQ9kHFtxhFE3R99PQ1a_yTTamJu3e/view?usp=sharing).
+* We have put together a flow chart to help you pick the right type of graph for particular types of data and analysis goals: [available as a PDF here](https://drive.google.com/file/d/1zsedQ9kHFtxhFE3R99PQ1a_yTTamJu3e/view?usp=sharing).
 
 ## Getting started
 
@@ -328,6 +328,13 @@ to display 6 rows from the top (or bottom) of the dataset. We can change the num
 
 ```{r, echo = TRUE}
 head(diamonds, 10)
+```
+
+We could also rewrite the previous code chunk using the pipe operator:
+
+```{r, eval=FALSE, echo=TRUE}
+diamonds %>%
+  head(10)
 ```
 
 
@@ -641,6 +648,60 @@ gradethis::grade_code()
 ```
 
 
+### Violin plots
+
+An alternative to the boxplot is the violin plot. This combines aspects of the histogram and boxplot into a single graph.
+
+The code for a violin plot is almost identical to the code or a boxplot - we just use the `geom_violin()` geom function:
+
+```{r, echo=TRUE}
+diamonds %>%
+  ggplot() +
+  geom_violin(mapping = aes(x = "price", y = price))
+```
+
+### Labeling our graphs
+
+It is good practice to label all the graphs we create. We can do this by adding the `labs()` function to a graph:
+
+```{r, echo=TRUE}
+diamonds %>%
+  ggplot() +
+  geom_violin(mapping = aes(x = "price", y = price)) +
+  labs(title = "Violin plot of price", y = "price ($)")
+```
+
+Notice how:
+
+* the `labs()` function is a separate function that we add on to the graph as a separate layer with the `+` operator
+* inside the `labs()` function, we can supply an argument to the `title` parameter to change the title, and the `y` (and `x`) arguments to change the labels on those axes.
+
+<p class="comment3">
+Using the `labs()` function, add a title and y-axis label to the boxplot of `price` that you created earlier (we will leave the x-axis label as its default, since that is adequate for this graph.)
+</p>
+
+```{r boxplot_labels_exercise, exercise = TRUE}
+# Fill in the blanks:
+diamonds %>%
+  ggplot() +
+  geom_boxplot(mapping = aes(x = "price", y = price)) +
+  _____(_____ = "A boxplot of price", _____ = "price ($)")
+```
+
+```{r boxplot_labels_exercise-solution}
+# solution code
+diamonds %>%
+  ggplot() +
+  geom_boxplot(mapping = aes(x = "price", y = price)) +
+  labs(title = "A boxplot of price", y = "price ($)")
+```
+
+```{r boxplot_labels_exercise-check}
+# check code
+gradethis::grade_code()
+```
+
+
 ## Multivariate covariation
 
 When we have multiple variables we want to understand how their variation is related: this is called **covariation**.
@@ -664,13 +725,15 @@ Create a scatter plot with `price` on the y-axis and `carat` on the x-axis.
 ```{r kfxhpnqgmtclqbkt, exercise = TRUE}
 diamonds %>%
   ggplot() +
-  ______
+  ______ +
+  labs(title = "Scatter plot of dimond price vs size", y = "price ($)", x = "size (carats)")
 ```
 
 ```{r kfxhpnqgmtclqbkt-solution}
 diamonds %>%
   ggplot() +
-  geom_point(mapping = aes(x = carat, y = price))
+  geom_point(mapping = aes(x = carat, y = price)) +
+  labs(title = "Scatter plot of dimond price vs size", y = "price ($)", x = "size (carats)")
 ```
 
 ```{r kfxhpnqgmtclqbkt-check}
@@ -687,21 +750,23 @@ We have a several options to show density.
 
 * We could make the points transparent with the `alpha` parameter. Then dense regions would be darker (because there would be many overlapping transparent points). For example, with `alpha = 0.1`:
 
-  ```{r}
+  ```{r, echo = TRUE}
   diamonds %>%
     ggplot() +
-    geom_point(mapping = aes(x = carat, y = price), alpha=0.1)
+    geom_point(mapping = aes(x = carat, y = price), alpha=0.1) +
+    labs(title = "Scatter plot of dimond price vs size", y = "price ($)", x = "size (carats)")
   ```
 
 * We can also create a heat map, which is a colored grid where the intensity of the color represents a value on a scale - in this case, the color represents the density. This uses the `geom_bin2d` geom function:
 
-  ```{r}
+  ```{r, echo = TRUE}
   diamonds %>%
     ggplot() +
-    geom_bin2d(mapping = aes(x = carat, y = price))
+    geom_bin2d(mapping = aes(x = carat, y = price)) +
+    labs(title = "Heat map of dimond price vs size", y = "price ($)", x = "size (carats)")
   ```
   
-  This is essentially a 2-dimensional histogram. Each square is like a bar in a univariate histogram. In this heat map, the color represents the "height" of the 2-dimensional bin.
+  This is essentially a 2-dimensional histogram. Each square is like a bar in a univariate histogram. In this heat map, the color represents the "height" of the 2-dimensional bin, i.e. how many diamonds fall into each cell of the heat map's grid.
 
 <!-- Todo
 Have students recreate this graph

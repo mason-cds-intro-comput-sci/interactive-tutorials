@@ -2,7 +2,7 @@
 title: "Introduction to Programming in R"
 author: "by Dominic White"
 tutorial:
-  version: 1.1
+  version: 1.2
 output:
   learnr::tutorial:
     progressive: true
@@ -44,7 +44,7 @@ border: 1px solid black;
 </style>
 
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, context="setup"}
 # devtools::install_github("rstudio/packrat")
 library(tidyverse)
 library(learnr)
@@ -54,7 +54,7 @@ library(sortable)
 
 knitr::opts_chunk$set(echo = FALSE)
 tutorial_options(exercise.checker = grade_learnr)
-tutorial_options(exercise.startover = FALSE)
+tutorial_options(exercise.startover = TRUE)
 tutorial_options(exercise.completion = FALSE)
 
 new_recorder <- function(tutorial_id, tutorial_version, user_id, event, data) {
@@ -743,7 +743,7 @@ v3 + v4
 ```{r vector_broadcasting_quiz, echo=FALSE}
 question("What happens when you add two vectors of different lengths?",
   answer("The 2 elements of v3 are added to the first 2 elements of v4, and the rest of v4 is unchanged."),
-  answer("v3 is repeated to match the length of v4 before they are added.", correct=TRUE, message="This is called 'broadcasting', and is not what you might expect. In can cause bugs in R programs if the programmer (i.e. you) thinks that two vectors are the same length when they are not."),
+  answer("v4 is repeated to match the length of v3 before they are added.", correct=TRUE, message="This is called 'broadcasting', and is not what you might expect. In can cause bugs in R programs if the programmer (i.e. you) thinks that two vectors are the same length when they are not."),
   answer("R guesses values for the remaining values of v3 so that the two vectors are the same length."),
   allow_retry = TRUE
 )
