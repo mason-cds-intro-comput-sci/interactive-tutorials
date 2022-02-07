@@ -4,7 +4,7 @@ author:
  - "Ajay Kulkarni"
  - "Dominic White"
 tutorial:
-  version: 1.2
+  version: 1.3
 output:
   learnr::tutorial:
     progressive: true
@@ -204,7 +204,146 @@ The rest of this tutorial will go through different types of graphs, but here ar
 
 * We have put together a flow chart to help you pick the right type of graph for particular types of data and analysis goals: [available as a PDF here](https://drive.google.com/file/d/1zsedQ9kHFtxhFE3R99PQ1a_yTTamJu3e/view?usp=sharing).
 
-## Getting started
+
+## Plotting with `ggplot()`
+
+### From `qplot()` to `ggplot() + ...`
+
+So far we have created graphs with the `qplot()` function from the `ggplot2` package.
+
+However `qplot()` is just a **q**uick plotting function that allows us to make simple graphs. To get access to all the visualization features of the `ggplot2` package, we will need to learn the proper way to create `ggplot` graphs.
+
+For example, instead of using `qplot()` to create a histogram:
+
+```{r, echo=TRUE, warning=FALSE}
+qplot(x = height, bins = 30, data = starwars)
+```
+
+...we will use an alternative pair of functions, `ggplot()` and `geom_histogram()`, like this:
+
+```{r, echo=TRUE, warning=FALSE}
+ggplot(data = starwars) +
+  geom_histogram(
+    mapping = aes(x = height),
+    bins = 30
+  )
+```
+
+As you can see, the histograms are exactly the same. However, we've avoided this way of creating graphs up until now, because we've been trying to keep our code as simple as possible. 
+
+Now we need to make the trade of slightly more complicated code in exchange for much better graphs. So let's jump in and see how and why this works.
+
+
+### Graphs as layers
+
+The `ggplot2` package gets its name because it s based on a concept called the *Grammar of Graphics* (hence **gg**plot...). This is a fascinating topic that we unfortunately don't have the time to dive into, but the key idea is that **all data visualizations can be described using a common set of terms and ideas** (i.e. a "grammar").
+
+One of the most important parts of this grammar are the layers that we can add to a graph.
+
+For example, the `ggplot()` function by itself just creates a blank canvas:
+
+```{r, echo=TRUE, warning=FALSE}
+ggplot(data = starwars)
+```
+
+To actually get something interesting on this graph, we need to take the __data__ and __map__ it to some __geometric__ shape.
+
+For example, if we wanted to map the `height` column of the `starwars` dataset to the geometric shape of a histograms bars, we could use this code:
+
+`geom_histogram(mapping = aes(x = height))`
+
+A few things to note:
+
+* The `geom_histogram()` functions is an example of what we call a *geom function* (each of which specifies a different type of geometry).
+* Geom functions have a parameter called `mapping` which, unsurprisingly, tells R how to convert a column of data into a pretty layer.
+* The argument that we pass to the `mapping` parameter is a function called `aes()` (this is short for "aesthetic"). Inside the `aes()` function we need to specify any parts of the histogram's appearance that are determined by a column in the dataset.
+  * In our example the x-axis of the histogram needs to show the `height` variable.
+
+We then add this layer to the canvas created by `ggplot()`. How do we add things together in R? With the addition operator `+` of course!
+
+And so our final code looks like this:
+
+```r
+ggplot(data = starwars) +
+  geom_histogram(mapping = aes(x = height))
+```
+
+```{r, warning=FALSE}
+ggplot(data = starwars) +
+  geom_histogram(
+    mapping = aes(x = height),
+    bins = 30
+  )
+```
+
+
+### Aesthetic mappings and other parameters
+
+We refer to this combination of the `mapping` parameter and its `aes()` argument as an *aesthetic mapping*, which is a fancy way of saying how do figure out how to convert columns of the dataset into some visual representation.
+
+But not every part of a graph is determined by data in the dataset. For example, there is no column in the `starwars` dataset that tells us how many bins this histogram should have. Instead we need to specify that number ourself, with another piece of data (i.e. the number of bins).
+
+Since this number is not in the dataset, it is not an aesthetic mapping. Therefore we specify the number of bins as an argument of the `geom_histogram()` function, and not of the `aes()` function, like so:
+
+```{r, warning=FALSE}
+ggplot(data = starwars) +
+  geom_histogram(
+    mapping = aes(x = height),
+    bins = 30
+  )
+```
+
+Do you see how the `geom_histogram()` function has two parameters, `mapping` and `bins`, whereas the `aes()` function has a single parameter (`x`)?
+
+<!--
+### Histograms with `ggplot()`
+Illustrating position and identity
+-->
+
+### Scatter plots with `ggplot()`
+
+Hopefully you are beginning to see that the `ggplot()` syntax uses many of the same parameters as `qplot()`, just in different places.
+
+We can create a scatter plot by switching to a geom function called `geom_point()` and passing an additional column to the `aes()` function to go on the `y` axis:
+
+```{r, echo=TRUE, warning=FALSE}
+ggplot(data = starwars) +
+  geom_point(
+    mapping = aes(x = height, y = mass)
+  )
+```
+
+
+### Piping to `ggplot()`
+
+One advantage of `ggplot()` over `qplot()` is that we can pipe a dataframe to `ggplot()` because the first parameter of ggplot() is the dataset to be used.
+
+So instead of explicity passing the `starwars` dataframe to the `data` parameter:
+
+```r
+ggplot(data = starwars) + ...
+```
+
+...we could write this:
+
+```r
+starwars %>%
+  ggplot() + ...
+```
+
+This might not seem like much, but it does mean that we can put the graphing functions at the end of a series of piped functions that transform and wrangle our dataset, for example:
+
+```r
+some_dataset %>%
+  mutate(...) %>%
+  filter(...) %>%
+  ggplot() + geom_FUNCTION(...)
+```
+
+
+
+
+## Starting EDA
 
 ### A "first steps" EDA checklist
 
@@ -392,7 +531,7 @@ If a variable is categorical, we can summarize it by looking at the proportions 
 
 ```r
 dataframe %>%
-  group_by(categorical_variable)
+  group_by(categorical_variable) %>%
   summarize(
     count = n(),
     proportion = n() / nrow(.),
@@ -770,6 +909,13 @@ We have a several options to show density.
 
 <!-- Todo
 Have students recreate this graph
+-->
+
+<!--
+
+TODO:
+Faceting... since its in the quiz...
+
 -->
 
 
